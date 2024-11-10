@@ -21,7 +21,6 @@ public class TaskController {
     // Add a new task
     @PostMapping("/add")
     public TaskEvent addTask(@RequestBody TaskEvent task) {
-        task.setId((long) (tasks.size() + 1)); // Simple ID assignment
         tasks.add(task);
         return task;
     }
@@ -30,7 +29,7 @@ public class TaskController {
     @PutMapping("/update/{id}")
     public TaskEvent updateTask(@PathVariable Long id, @RequestBody TaskEvent updatedTask) {
         for (TaskEvent task : tasks) {
-            if (task.getId().equals(id)) {
+            if (task.getId() == id) {
                 task.setName(updatedTask.getName());
                 task.setType(updatedTask.getType());
                 task.setDuration(updatedTask.getDuration());

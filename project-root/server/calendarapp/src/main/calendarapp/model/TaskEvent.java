@@ -1,15 +1,16 @@
 package calendarapp.model;
 
 public class TaskEvent {
-    private Long id;
+    private int id; 
+    private static int nextID = 1;
     private String name;
     private String type; // "task" or "event"
     private int duration;
     private String description;
     private int participants;
 
-    public TaskEvent(Long id, String name, String type, int duration, String description, int participants) {
-        this.id = id;
+    public TaskEvent(String name, String type, int duration, String description, int participants) {
+        this.id = nextID++;
         this.name = name;
         this.type = type;
         this.duration = duration;
@@ -18,12 +19,8 @@ public class TaskEvent {
     }
 
     // Getters and Setters
-    public Long getId() {
+    public int getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
