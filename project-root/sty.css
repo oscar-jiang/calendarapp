@@ -38,13 +38,12 @@ body {
 .calendar {
   display: flex;
   flex: 1;
-  background-image: url('assets/indomiechitato.jpg');
+  background-image: url('assets/criss.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add a shadow for depth */
 }
 
 /* Styling for each day column inside the calendar */
@@ -54,9 +53,11 @@ body {
   margin: 5px;
   padding: 10px;
   border-radius: 8px;
-  display: flex;
+  display: block;
+  /* change later if flex is preferred
+  display:flex
   flex-direction: column;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  */
 }
 
 .day-header {
