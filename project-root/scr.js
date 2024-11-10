@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     deleteButton.addEventListener("click", () => deleteTask(task.id, taskDiv));
     taskDiv.appendChild(deleteButton);
 
-    // Append to suggestions or assigned day
+    // Append task to the correct location in the DOM
     if (task.day) {
       document.getElementById(task.day).querySelector(".day-content").appendChild(taskDiv);
     } else {
@@ -93,30 +93,48 @@ document.addEventListener("DOMContentLoaded", () => {
     taskElement.remove();
   }
 
-  function allowDrop(event) {
-    event.preventDefault();
+// Drag-and-drop functions
+function allowDrop(event) {
+  event.preventDefault();
+}
+
+function drag(event) {
+  // Set the task ID as data to transfer
+  event.dataTransfer.setData("text", event.target.id);
+}
+
+function drop(event) {
+  event.preventDefault();
+  
+  // Get the task ID from the data transfer
+  const taskId = event.dataTransfer.getData("text");
+  const taskDiv = document.getElementById(taskId);
+
+  // Ensure the taskDiv exists
+  if (!taskDiv) {
+    console.error("Task element not found:", taskId);
+    return;
   }
 
-  function drag(event) {
-    event.dataTransfer.setData("text", event.target.id);
-  }
+  // Check if the drop target has a .day-content element to append to
+  const dayContent = event.target.closest(".day-column").querySelector(".day-content");
+  
+  if (dayContent) {
+    // Append the task to the correct day's .day-content div
+    dayContent.appendChild(taskDiv);
 
-  function drop(event) {
-    event.preventDefault();
-    const taskId = event.dataTransfer.getData("text");
-    const taskDiv = document.getElementById(taskId);
-    
-    // Append task to the day content
-    event.target.querySelector(".day-content").appendChild(taskDiv);
-
-    // Update task's day in local storage
+    // Update task's assigned day in local storage
     const tasks = loadTasksFromLocalStorage();
     const taskIndex = tasks.findIndex(task => task.id === taskId);
     if (taskIndex !== -1) {
-      tasks[taskIndex].day = event.target.id; // Save day ID (e.g., "monday", "tuesday")
+      tasks[taskIndex].day = event.target.closest(".day-column").id; // Save day ID (e.g., "sunday")
       saveTasksToLocalStorage(tasks);
     }
+  } else {
+    console.error("Could not find day-content for drop target:", event.target);
   }
+}
+
 
   document.querySelectorAll(".day-column").forEach(dayColumn => {
     dayColumn.ondrop = drop;
