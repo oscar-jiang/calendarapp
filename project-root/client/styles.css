@@ -1,0 +1,53 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.suggestion-tab {
+    width: 20%;
+    background-color: #d0f0f7;
+    padding: 10px;
+}
+
+.calendar {
+    display: flex;
+    flex: 1;
+}
+
+.day-column {
+    flex: 1;
+    border: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+}
+
+.day-header {
+    background-color: #c1e1c1;
+    text-align: center;
+    padding: 10px;
+    font-weight: bold;
+}
+
+.day-content {
+    background-color: #ffe6f1;
+    flex: 1;
+    min-height: 200px;
+}
+
+.task {
+    background-color: #f9c2ff;
+    margin: 5px;
+    padding: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+}
