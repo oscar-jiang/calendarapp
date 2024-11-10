@@ -1,6 +1,6 @@
-package com.example.calendarapp.controller;
+package calendarapp.model;
 
-import com.example.calendarapp.model.TaskEvent;
+import calendarapp.model.TaskEvent;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;

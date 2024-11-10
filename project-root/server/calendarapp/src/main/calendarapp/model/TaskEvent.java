@@ -1,4 +1,4 @@
-package com.example.calendarapp.model;
+package calendarapp.model;
 
 public class TaskEvent {
     private Long id;
