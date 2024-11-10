@@ -4,54 +4,84 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadTasks();
 
-  addTaskBtn.addEventListener("click", () => {
-    const taskName = prompt("Enter task name:");
-    if (taskName) {
-      const task = createTaskObject(taskName);
-      addTaskToDOM(task);
-      saveTask(task);
-    }
+ // Event listener for adding a new task with time interval
+addTaskBtn.addEventListener("click", () => {
+  const taskName = prompt("Enter task name:");
+  const startTime = prompt("Enter start time (e.g., 09:00):");
+  const endTime = prompt("Enter end time (e.g., 10:30):");
+
+  if (taskName && startTime && endTime) {
+    const task = createTaskObject(taskName, startTime, endTime);
+    addTaskToDOM(task);
+    saveTask(task);
+  }
+});
+
+// Updated function to create a task object with time intervals
+function createTaskObject(name, startTime, endTime) {
+  return {
+    id: `task-${Date.now()}`, // Unique ID
+    name,
+    completed: false,
+    day: null, // No assigned day initially
+    startTime,
+    endTime
+  };
+}
+
+function addTaskToDOM(task) {
+  const taskDiv = document.createElement("div");
+  taskDiv.className = "task";
+  taskDiv.draggable = true;
+  taskDiv.id = task.id;
+
+  // Display task name and time interval
+  taskDiv.innerHTML = `<strong>${task.name}</strong><br>${task.startTime} - ${task.endTime}`;
+
+  taskDiv.addEventListener("dragstart", drag);
+
+  // Checkbox for marking task as completed
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = task.completed;
+  checkbox.className = "task-checkbox";
+  checkbox.addEventListener("change", (e) => toggleTaskCompletion(task.id, e.target.checked));
+  taskDiv.prepend(checkbox);
+
+  // Delete button
+  const deleteButton = document.createElement("button");
+  deleteButton.textContent = "Delete";
+  deleteButton.className = "delete-button";
+  deleteButton.addEventListener("click", () => deleteTask(task.id, taskDiv));
+  taskDiv.appendChild(deleteButton);
+
+  // Append task to the correct location in the DOM
+  if (task.day) {
+    const dayContent = document.getElementById(task.day).querySelector(".day-content");
+    dayContent.appendChild(taskDiv);
+    sortTasksByTime(dayContent); // Sort tasks after adding
+  } else {
+    suggestionsList.appendChild(taskDiv);
+  }
+}
+function sortTasksByTime(dayContent) {
+  // Get all task elements in the day content
+  const tasks = Array.from(dayContent.querySelectorAll(".task"));
+
+  // Sort tasks by their startTime attribute
+  tasks.sort((a, b) => {
+    const timeA = a.querySelector('strong').textContent;
+    const timeB = b.querySelector('strong').textContent;
+    const [startHourA, startMinA] = timeA.split(":").map(Number);
+    const [startHourB, startMinB] = timeB.split(":").map(Number);
+    return startHourA * 60 + startMinA - (startHourB * 60 + startMinB);
   });
 
-  function createTaskObject(name) {
-    return {
-      id: `task-${Date.now()}`, // Unique ID
-      name,
-      completed: false,
-      day: null // No assigned day initially
-    };
-  }
+  // Clear the day content and append tasks in sorted order
+  dayContent.innerHTML = "";
+  tasks.forEach(task => dayContent.appendChild(task));
+}
 
-  function addTaskToDOM(task) {
-    const taskDiv = document.createElement("div");
-    taskDiv.className = "task";
-    taskDiv.draggable = true;
-    taskDiv.id = task.id;
-    taskDiv.textContent = task.name;
-    taskDiv.addEventListener("dragstart", drag);
-
-    // Checkbox for marking task as completed
-    const checkbox = document.createElement("input");
-    checkbox.type = "checkbox";
-    checkbox.checked = task.completed;
-    checkbox.className = "task-checkbox";
-    checkbox.addEventListener("change", (e) => toggleTaskCompletion(task.id, e.target.checked));
-    taskDiv.prepend(checkbox);
-
-    // Delete button
-    const deleteButton = document.createElement("button");
-    deleteButton.textContent = "Delete";
-    deleteButton.className = "delete-button";
-    deleteButton.addEventListener("click", () => deleteTask(task.id, taskDiv));
-    taskDiv.appendChild(deleteButton);
-
-    // Append task to the correct location in the DOM
-    if (task.day) {
-      document.getElementById(task.day).querySelector(".day-content").appendChild(taskDiv);
-    } else {
-      suggestionsList.appendChild(taskDiv);
-    }
-  }
 
   function saveTask(task) {
     const tasks = loadTasksFromLocalStorage();
@@ -134,7 +164,6 @@ function drop(event) {
     console.error("Could not find day-content for drop target:", event.target);
   }
 }
-
 
   document.querySelectorAll(".day-column").forEach(dayColumn => {
     dayColumn.ondrop = drop;

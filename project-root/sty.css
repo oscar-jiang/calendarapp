@@ -34,17 +34,29 @@ body {
   margin-top: 10px;
 }
 
+/* Calendar container with background image */
 .calendar {
   display: flex;
   flex: 1;
-  background-color: #f1f8e9;
+  background-image: url('assets/indomiechitato.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Add a shadow for depth */
 }
 
+/* Styling for each day column inside the calendar */
 .day-column {
   flex: 1;
-  border: 1px solid #ddd;
+  background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
+  margin: 5px;
+  padding: 10px;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
 }
 
 .day-header {
@@ -86,4 +98,31 @@ body {
 
 .delete-button:hover {
   background-color: #d32f2f;
+}
+
+/* Task styling */
+.task {
+  background-color: #bbdefb;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px 0;
+  cursor: move;
+  display: flex;
+  flex-direction: column; /* Stack name and time vertically */
+  align-items: flex-start; /* Align to the start of the container */
+}
+
+/* Task name styling */
+.task-name {
+  font-weight: bold;
+  font-size: 16px;
+  color: #1e88e5;
+  margin-bottom: 4px; /* Space between name and time */
+}
+
+/* Time interval styling */
+.task-time {
+  font-size: 14px;
+  color: #666;
+  white-space: nowrap; /* Prevent wrapping to a new line */
 }
