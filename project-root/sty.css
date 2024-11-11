@@ -20,7 +20,7 @@ body {
 }
 
 .taskmain {
-  width: 265px;
+  min-width: 265;
   background-color: #e3f2fd;
   padding: 20px;
   border-radius: 10px;
