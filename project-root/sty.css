@@ -20,7 +20,7 @@ body {
 }
 
 .taskmain {
-  width: 25%;
+  min-width: 265;
   background-color: #e3f2fd;
   padding: 20px;
   border-radius: 10px;
@@ -56,7 +56,7 @@ body {
   padding: 10px;
   border-radius: 8px;
   display: block;
-  min-width: 250px;
+  min-height: 500px;
   /* change later if flex is preferred
   display:flex
   flex-direction: column;
@@ -85,6 +85,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  min-width: 240px;
 }
 
 .task-name {
