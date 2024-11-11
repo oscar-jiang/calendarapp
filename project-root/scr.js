@@ -1,10 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const suggestionsList = document.getElementById("suggestions-list");
+  const tasksList = document.getElementById("tasks-list");
   const addTaskBtn = document.getElementById("add-task-btn");
 
   loadTasks();
 
- // Event listener for adding a new task with time interval
+ // add new task with time interval
 addTaskBtn.addEventListener("click", () => {
   const taskName = prompt("Enter task name:");
   const startTime = prompt("Enter start time (e.g., 09:00):");
@@ -17,7 +17,7 @@ addTaskBtn.addEventListener("click", () => {
   }
 });
 
-// Updated function to create a task object with time intervals
+// create task object with time interval
 function createTaskObject(name, startTime, endTime) {
   return {
     id: `task-${Date.now()}`, // Unique ID
@@ -35,12 +35,12 @@ function addTaskToDOM(task) {
   taskDiv.draggable = true;
   taskDiv.id = task.id;
 
-  // Display task name and time interval
+  // display task name and time interval
   taskDiv.innerHTML = `<strong>${task.name}</strong><br>${task.startTime} - ${task.endTime}`;
 
   taskDiv.addEventListener("dragstart", drag);
 
-  // Checkbox for marking task as completed
+  // checkbox
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
   checkbox.checked = task.completed;
@@ -48,27 +48,27 @@ function addTaskToDOM(task) {
   checkbox.addEventListener("change", (e) => toggleTaskCompletion(task.id, e.target.checked));
   taskDiv.prepend(checkbox);
 
-  // Delete button
+  // delete button
   const deleteButton = document.createElement("button");
   deleteButton.textContent = "Delete";
   deleteButton.className = "delete-button";
   deleteButton.addEventListener("click", () => deleteTask(task.id, taskDiv));
   taskDiv.appendChild(deleteButton);
 
-  // Append task to the correct location in the DOM
+  // append task to correct location in the DOM
   if (task.day) {
     const dayContent = document.getElementById(task.day).querySelector(".day-content");
     dayContent.appendChild(taskDiv);
-    sortTasksByTime(dayContent); // Sort tasks after adding
+    sortTasksByTime(dayContent);
   } else {
-    suggestionsList.appendChild(taskDiv);
+    tasksList.appendChild(taskDiv);
   }
 }
 function sortTasksByTime(dayContent) {
-  // Get all task elements in the day content
+  // get all task elements in the day
   const tasks = Array.from(dayContent.querySelectorAll(".task"));
 
-  // Sort tasks by their startTime attribute
+  // sort tasks by their startTime
   tasks.sort((a, b) => {
     const timeA = a.querySelector('strong').textContent;
     const timeB = b.querySelector('strong').textContent;
@@ -77,11 +77,12 @@ function sortTasksByTime(dayContent) {
     return startHourA * 60 + startMinA - (startHourB * 60 + startMinB);
   });
 
-  // Clear the day content and append tasks in sorted order
+  // clear the day and append tasks in sorted order
   dayContent.innerHTML = "";
   tasks.forEach(task => dayContent.appendChild(task));
 }
 
+// 3 things above not working ^^^^^^^^^^^^^^
 
   function saveTask(task) {
     const tasks = loadTasksFromLocalStorage();
@@ -112,48 +113,48 @@ function sortTasksByTime(dayContent) {
     }
   }
 
-  // New function to delete task
+  // delete task
   function deleteTask(taskId, taskElement) {
-    // Remove task from local storage
+    // remove task from local storage
     const tasks = loadTasksFromLocalStorage();
     const updatedTasks = tasks.filter(task => task.id !== taskId);
     saveTasksToLocalStorage(updatedTasks);
 
-    // Remove task element from the DOM
+    // remove task element from DOM
     taskElement.remove();
   }
 
-// Drag-and-drop functions
+// drag-drop functions
 function allowDrop(event) {
   event.preventDefault();
 }
 
 function drag(event) {
-  // Set the task ID as data to transfer
+  // set the task ID as data
   event.dataTransfer.setData("text", event.target.id);
 }
 
 function drop(event) {
   event.preventDefault();
   
-  // Get the task ID from the data transfer
+  // get taskID
   const taskId = event.dataTransfer.getData("text");
   const taskDiv = document.getElementById(taskId);
 
-  // Ensure the taskDiv exists
+  // ensure taskDiv exists
   if (!taskDiv) {
     console.error("Task element not found:", taskId);
     return;
   }
 
-  // Check if the drop target has a .day-content element to append to
+  // check if drop target element to append to
   const dayContent = event.target.closest(".day-column").querySelector(".day-content");
   
   if (dayContent) {
-    // Append the task to the correct day's .day-content div
+    // append the task to day
     dayContent.appendChild(taskDiv);
 
-    // Update task's assigned day in local storage
+    // update task's assigned day in local storage
     const tasks = loadTasksFromLocalStorage();
     const taskIndex = tasks.findIndex(task => task.id === taskId);
     if (taskIndex !== -1) {
@@ -168,5 +169,61 @@ function drop(event) {
   document.querySelectorAll(".day-column").forEach(dayColumn => {
     dayColumn.ondrop = drop;
     dayColumn.ondragover = allowDrop;
+
+    // dropping a task back to the tasks section
+function dropToTasks(event) {
+  event.preventDefault();
+
+  if (!taskDiv) {
+    console.error("Task element not found", taskID);
+    return;
+  }
+
+  const taskmain = event.target.closest(".taskmain")
+  
+  if (taskDiv) {
+    // append task back to tasks list
+    taskmain.appendChild(taskDiv);
+
+    // Update task's 'day' property in local storage
+    const tasks = loadTasksFromLocalStorage();
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
+    if (taskIndex !== -1) {
+      tasks[taskIndex].day = null; // Reset the day to null
+      saveTasksToLocalStorage(tasks); // Save updated tasks
+    }
+  } else {
+    console.error("Task element not found:", taskId);
+  }
+}
+// task drag drop not working ^^^^^^
+
   });
+  function toggleTaskCompletion(taskId, isCompleted) {
+    const tasks = loadTasksFromLocalStorage();
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
+  
+    if (taskIndex !== -1) {
+      tasks[taskIndex].completed = isCompleted;
+      saveTasksToLocalStorage(tasks);
+  
+      // Get task element
+      const taskElement = document.getElementById(taskId);
+      
+      // Toggle "completed" class
+      if (isCompleted) {
+        taskElement.classList.add("completed");
+      } else {
+        taskElement.classList.remove("completed");
+      }}}
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = task.completed;
+  checkbox.className = "task-checkbox";
+  
+  // Trigger toggleTaskCompletion if checked
+  checkbox.addEventListener("change", (e) => toggleTaskCompletion(task.id, e.target.checked));
+  taskDiv.prepend(checkbox);
+  
 });

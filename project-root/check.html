@@ -8,14 +8,15 @@
 </head>
 <body>
   <div class="container">
-    <!-- Suggestions Area -->
-    <div class="suggestions">
-      <h2>Suggestions</h2>
-      <div id="suggestions-list"></div>
+    <!-- Tasks -->
+    <div class="taskmain">
+      <h2>TASKS</h2>
+      <div id="tasks-list"></div>
+      <div ondrop="dropToSuggestions(event)" ondragover="allowDrop(event)"></div>
       <button id="add-task-btn">+ Add Task</button>
     </div>
 
-    <!-- Calendar Area -->
+    <!-- Calendar -->
     <div class="calendar">
       <div class="day-column" id="sunday" ondrop="drop(event)" ondragover="allowDrop(event)">
         <div class="day-header">Sunday</div>
@@ -25,7 +26,6 @@
         <div class="day-header">Monday</div>
         <div class="day-content"></div>
       </div>
-      <!-- Repeat the above block for Tuesday through Saturday -->
       <div class="day-column" id="tuesday" ondrop="drop(event)" ondragover="allowDrop(event)">
         <div class="day-header">Tuesday</div>
         <div class="day-content"></div>
