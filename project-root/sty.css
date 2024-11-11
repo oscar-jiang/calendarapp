@@ -16,7 +16,7 @@ body {
 .container {
   display: flex;
   width: 90%;
-  max-width: 1200px;
+  min-width: 1200px;
 }
 
 .taskmain {
@@ -36,7 +36,7 @@ body {
   margin-top: 10px;
 }
 
-/* Calendar container with background image */
+/* Calendar */
 .calendar {
   display: flex;
   flex: 1;
@@ -48,14 +48,15 @@ body {
   border-radius: 10px;
 }
 
-/* Styling for each day column inside the calendar */
+/* Days */
 .day-column {
   flex: 1;
-  background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white */
+  background-color: rgba(255, 255, 255, 0.8);
   margin: 5px;
   padding: 10px;
   border-radius: 8px;
   display: block;
+  min-width: 250px;
   /* change later if flex is preferred
   display:flex
   flex-direction: column;
@@ -82,21 +83,21 @@ body {
   margin: 5px 0;
   cursor: move;
   display: flex;
-  flex-direction: column; /* Stack name and time vertically */
-  align-items: flex-start; /* Align to the start of the container */
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .task-name {
   font-weight: bold;
   font-size: 16px;
   color: #1e88e5;
-  margin-bottom: 4px; /* Space between name and time */
+  margin-bottom: 4px;
 }
 
 .task-time {
   font-size: 14px;
   color: #666;
-  white-space: nowrap; /* Prevent wrapping to a new line */
+  white-space: nowrap;
 }
 
 .task.completed {
@@ -117,7 +118,6 @@ body {
   background-color: #d32f2f;
 }
 
-/* Completed task styling */
 .completed {
   text-decoration: line-through;
   color: #888;
