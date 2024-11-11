@@ -168,5 +168,34 @@ function drop(event) {
   document.querySelectorAll(".day-column").forEach(dayColumn => {
     dayColumn.ondrop = drop;
     dayColumn.ondragover = allowDrop;
+
+
+function allowDrop(event) {
+      event.preventDefault();
+    }
+    
+    // Function for dropping a task back to the suggestions section
+function dropToSuggestions(event) {
+  event.preventDefault();
+
+  // Get the ID of the task being dragged
+  const taskId = event.dataTransfer.getData("text");
+  const taskDiv = document.getElementById(taskId);
+
+  if (taskDiv) {
+    // Append the task back to the suggestions list
+    document.getElementById("suggestions-list").appendChild(taskDiv);
+
+    // Update the task's 'day' property in local storage to null
+    const tasks = loadTasksFromLocalStorage();
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
+    if (taskIndex !== -1) {
+      tasks[taskIndex].day = null; // Reset the day to null
+      saveTasksToLocalStorage(tasks); // Save updated tasks
+    }
+  } else {
+    console.error("Task element not found:", taskId);
+  }
+}
   });
 });
