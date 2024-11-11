@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const suggestionsList = document.getElementById("suggestions-list");
+  const tasksList = document.getElementById("tasks-list");
   const addTaskBtn = document.getElementById("add-task-btn");
 
   loadTasks();
@@ -61,7 +61,7 @@ function addTaskToDOM(task) {
     dayContent.appendChild(taskDiv);
     sortTasksByTime(dayContent); // Sort tasks after adding
   } else {
-    suggestionsList.appendChild(taskDiv);
+    tasksList.appendChild(taskDiv);
   }
 }
 function sortTasksByTime(dayContent) {
@@ -173,9 +173,9 @@ function drop(event) {
 function allowDrop(event) {
       event.preventDefault();
     }
-    
-    // Function for dropping a task back to the suggestions section
-function dropToSuggestions(event) {
+
+    // Function for dropping a task back to the tasks section
+function dropToTasks(event) {
   event.preventDefault();
 
   // Get the ID of the task being dragged
@@ -183,8 +183,8 @@ function dropToSuggestions(event) {
   const taskDiv = document.getElementById(taskId);
 
   if (taskDiv) {
-    // Append the task back to the suggestions list
-    document.getElementById("suggestions-list").appendChild(taskDiv);
+    // Append the task back to the tasks list
+    document.getElementById("tasks-list").appendChild(taskDiv);
 
     // Update the task's 'day' property in local storage to null
     const tasks = loadTasksFromLocalStorage();
@@ -198,4 +198,32 @@ function dropToSuggestions(event) {
   }
 }
   });
+  function toggleTaskCompletion(taskId, isCompleted) {
+    const tasks = loadTasksFromLocalStorage();
+    const taskIndex = tasks.findIndex(task => task.id === taskId);
+  
+    if (taskIndex !== -1) {
+      tasks[taskIndex].completed = isCompleted; // Update the completed status in local storage
+      saveTasksToLocalStorage(tasks); // Save the updated tasks list
+  
+      // Get the task element in the DOM
+      const taskElement = document.getElementById(taskId);
+      
+      // Toggle "completed" class
+      if (isCompleted) {
+        taskElement.classList.add("completed");
+      } else {
+        taskElement.classList.remove("completed");
+      }}}
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.checked = task.completed;
+  checkbox.className = "task-checkbox";
+  
+  // Trigger the toggleTaskCompletion function when the checkbox changes
+  checkbox.addEventListener("change", (e) => toggleTaskCompletion(task.id, e.target.checked));
+  taskDiv.prepend(checkbox);
+  
+  
 });
